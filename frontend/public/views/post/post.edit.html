@@ -1,0 +1,35 @@
+<div layout="column" ng-cloak="" class="md-inline-form inputdemoBasicUsage">
+
+    <md-toolbar md-scroll-shrink="" >
+        <div class="md-toolbar-tools">
+          <h3>
+            <span>New post</span>
+          </h3>
+        </div>
+      </md-toolbar>
+
+    <md-content layout-padding="">
+        <div>
+            <form name="postForm">
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Title</label>
+                        <input ng-model="post.title">
+                    </md-input-container>
+                </div>
+
+                <md-input-container class="md-block">
+                    <label>Text</label>
+                    <textarea ng-model="post.text" md-maxlength="1000" rows="5" md-select-on-focus=""></textarea>
+                    <div layout-gt-sm="row">
+                        <md-button class="md-primary md-raised" ng-disabled="!post.title || !post.text" ng-click="createPost(post)">Create Post</md-button>
+                        <md-button class="md-accent md-raised md-hue-1 md-button md-ink-ripple" ng-click="go('/posts')">Cancel</md-button>
+                    </div>
+                </md-input-container>
+
+            </form>
+        </div>
+    </md-content>
+
+</div>

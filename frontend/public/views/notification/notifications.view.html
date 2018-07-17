@@ -1,0 +1,26 @@
+<div  ng-cloak="" layout-gt-sm="row" layout="column" class="listdemoBasicUsage" >
+
+    <div  flex="">
+
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <h2 flex="" md-truncate="">Latest Notifications</h2>
+        </div>
+      </md-toolbar>
+  
+      <md-content>
+        <md-list class="md-dense" flex="">
+            <md-list-item class="md-3-line" ng-repeat="item in notifications">
+                <div class="md-list-item-text" layout="column">
+                    <h3 ng-if="item.type == 'Like'">{{ item.user.name }} likes your post "<a ng-href="/#/posts/view/{{item.post.id}}">{{ item.post.title}}"</a></h3>
+                    <h3 ng-if="item.type == 'Comment'">{{ item.user.name}} commented on <a ng-href="/#/posts/view/{{item.post.id}}">your post</a>:"{{ item.comment.commentText}}"</h3>
+                </div>
+            <md-divider></md-divider>
+            </md-list-item>
+        </md-list>
+      </md-content>
+    </div>
+  
+    <md-divider></md-divider>
+  
+  </div>

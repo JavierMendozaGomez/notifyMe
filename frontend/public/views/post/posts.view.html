@@ -1,0 +1,30 @@
+<div  ng-cloak="" layout-gt-sm="row" layout="column" class="listdemoBasicUsage" >
+
+    <div  flex="">
+
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <h2 flex="" md-truncate="">Latest Posts</h2>
+          <md-button class="md-raised md-accent md-hue-3" ng-click="go('/posts/create/')">
+            New Post
+          </md-button>
+        </div>
+      </md-toolbar>
+  
+      <md-content>
+        <md-list flex="">
+          <md-list-item class="md-3-line" ng-repeat="item in posts" ng-click="viewPost(item.id)">
+            <div class="md-list-item-text" layout="column">
+              <h3>{{ item.title }}</h3>
+              <h4>{{ item.author }}</h4>
+              <p>{{ item.createdAt }}</p>
+            </div>
+          </md-list-item>
+          <md-divider></md-divider>
+        </md-list>
+      </md-content>
+    </div>
+  
+    <md-divider></md-divider>
+  
+  </div>

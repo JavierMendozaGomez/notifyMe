@@ -1,0 +1,33 @@
+<div layout="column" ng-cloak="" class="contentdemoBasicUsage" flex="">
+
+    <md-toolbar class="md-warn">
+            <div class="md-toolbar-tools">
+              <h2 flex="" md-truncate="">{{post.title}}-{{post.author}}</h2>
+              <md-button class="md-raised md-accent md-hue-3" ng-click="getNotificationReport(post)">
+                Get Notification report
+              </md-button>
+            </div>
+          </md-toolbar>
+
+    <md-content flex="" layout-padding="">
+        <p>{{post.text}}</p>
+        <div flex="">
+            <md-button class="md-raised md-button md-ink-ripple" ng-click="addComment(comment)">Like</md-button>
+            <md-list class="md-dense" flex="">
+                <md-subheader class="md-no-sticky">Comments</md-subheader>
+                <md-list-item class="md-3-line" ng-repeat="item in comments">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.author }}-{{item.createdAt}}</h3>
+                        <p>{{ item.commentText }}</p>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </md-list>
+            <md-input-container class="md-block" flex="">
+                <label>New Comment</label>
+                <textarea ng-model="comment.commentText" md-maxlength="150" rows="5" md-select-on-focus=""></textarea>
+                <md-button class="md-primary md-raised" ng-disabled="!comment.commentText" ng-click="addComment(comment)">Add comment</md-button>
+            </md-input-container>
+        </div>
+    </md-content>
+</div>

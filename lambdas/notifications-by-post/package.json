@@ -1,0 +1,16 @@
+{
+  "name": "notifications-by-post",
+  "version": "1.0.0",
+  "description": "Return the latest notifications which has received an user",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Javier Mendoza",
+  "license": "ISC",
+  "dependencies": {
+    "async": "~2.0.0-rc.6",
+    "aws-sdk": "",
+    "underscore": "^1.8.3"
+  }
+}

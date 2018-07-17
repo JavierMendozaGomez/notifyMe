@@ -1,0 +1,17 @@
+{
+  "name": "login",
+  "version": "1.0.0",
+  "description": "Login user by email and password and return a token",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Javier Mendoza",
+  "license": "ISC",
+  "dependencies": {
+    "async": "~2.0.0-rc.6",
+    "aws-sdk": "",
+    "node-pre-gyp": "~0.10.3",
+    "bcrypt": "~1.0.2"
+  }
+}

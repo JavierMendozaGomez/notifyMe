@@ -1,0 +1,15 @@
+{
+  "name": "reaction-create",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Function which creates a reaction of a post",
+  "license": "ISC",
+  "dependencies": {
+    "async": "",
+    "aws-sdk": ""
+  }
+}

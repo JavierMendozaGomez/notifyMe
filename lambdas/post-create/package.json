@@ -1,0 +1,16 @@
+{
+  "name": "post-create",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Function which creates a post",
+  "license": "ISC",
+  "dependencies": {
+    "async": "",
+    "aws-sdk": "",
+    "underscore": "^1.8.3"
+  }
+}

@@ -1,0 +1,7 @@
+
+lambdas/*/configs/
+lambdas/*/helpers/
+lambdas/*/node_modules/
+lambdas/*/.lambda/
+lambdas/*/.env
+lambdas/*/package-lock.json

@@ -1,0 +1,16 @@
+{
+  "name": "user-create",
+  "version": "1.0.0",
+  "description": "Create new user",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "~2.0.0-rc.6",
+    "aws-sdk": "",
+    "bcrypt": "~1.0.2"
+  }
+}

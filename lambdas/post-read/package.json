@@ -1,0 +1,15 @@
+{
+  "name": "post-read",
+  "version": "1.0.0",
+  "description": "Reads a post by id",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Javier Mendoza",
+  "license": "ISC",
+  "dependencies": {
+    "async": "~2.0.0-rc.6",
+    "aws-sdk": ""
+  }
+}

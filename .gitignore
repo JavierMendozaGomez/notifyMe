@@ -5,3 +5,8 @@ lambdas/*/node_modules/
 lambdas/*/.lambda/
 lambdas/*/.env
 lambdas/*/package-lock.json
+lambdas/node_modules/
+lambdas/package-lock.json
+.DS_store
+lambdas/.DS_store
+lambdas/base/.DS_store

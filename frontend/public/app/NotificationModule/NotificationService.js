@@ -11,12 +11,10 @@
             }
 
             service.getNotificationReport = function(idPost){
-                return $http.get(config.STATIC_URL + 'notifications/' + idPost).then(handleSuccess, handleError);;
-               // return $http.get(config.STATIC_URL + 'notifications/' + idPost).then(handleSuccess, handleError);
+                return $http.get(config.STATIC_URL + 'notifications/' + idPost).then(handleSuccess, handleError);
             }
 
             function handleSuccess(res) {
-                console.log('Res', res)
                 return res.data;
             }
 

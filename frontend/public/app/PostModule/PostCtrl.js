@@ -1,6 +1,6 @@
 "use strict";
 (function () {
-    app.controller('PostCtrl', function ($scope, $rootScope, $location, $routeParams, PostService, CommentService, NotificationService, ReactionService) {
+    app.controller('PostCtrl', function ($scope, $rootScope, $location, $routeParams, PostService, CommentService, NotificationService, ReactionService, S3Service) {
         $rootScope.processDate = function(item){
             let event = new Date(item.createdAt * 1000);
             let options = {  year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute : 'numeric' };
@@ -95,8 +95,12 @@
 
         $scope.getNotificationReport = function(post){
             NotificationService.getNotificationReport(post.id).then((response)=>{
-                if(response)
-                    console.log('Response report', response)    
+                if(response.error){
+                    console.log('Error getting report')
+                }
+                else{
+                    S3Service.downloadFile(response, post.id)
+                }
             })
         }
     })

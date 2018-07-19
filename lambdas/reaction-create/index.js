@@ -72,6 +72,7 @@ exports.handler = (event, context, result) => {
                 type,
                 idPost:postItem.id,
                 idPostCreator: postItem.createdBy,
+                read: postItem.createdBy + '_unreaded',
                 post:{
                     id: postItem.id,
                     title: postItem.title

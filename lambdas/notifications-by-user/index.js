@@ -32,21 +32,48 @@ exports.handler = (event, context, result) => {
         (executor, callback) => {
             dynamo.query({
                 TableName: config.TABLE.NOTIFICATIONS,
-                IndexName: 'idPostCreator-index',
-                KeyConditionExpression: 'idPostCreator = :idPostCreator',
-                ExpressionAttributeValues: {
-                    ':idPostCreator': executor.id
+                IndexName: 'read-index',
+                KeyConditionExpression: '#read = :read',
+                ExpressionAttributeNames:{
+                    '#read':'read'
                 },
-                ScanIndexForward: false,
-                ProjectionExpression:'#type, post, #comment, #user',
-                ExpressionAttributeNames:{'#type':'type', '#comment':'comment', '#user':'user'}
+                ExpressionAttributeValues: {
+                    ':read': executor.id + '_unreaded'
+                },
+                Limit: 5
             }, (err, result) => {  
                 if (err) {
                     console.log("Error",err);
                     return callback(err)
                 }
-                return callback(null, result.Items)
-        })
+                return callback(null, {items: result.Items, LastEvaluatedKey: result.LastEvaluatedKey})
+            })
+        },
+        (responseObj, callback) => {
+            async.each(responseObj.items, function(item, cbUpdate) {
+                let params = {
+                    TableName: config.TABLE.NOTIFICATIONS,
+                    Key: { id : item.id },
+                    ConditionExpression: 'id = :id',
+                    UpdateExpression: 'set #read = :read',
+                    ExpressionAttributeNames:{'#read':'read'},                
+                    ExpressionAttributeValues: {
+                      ':read' : item.idPostCreator + '_readed',
+                      ':id': item.id
+                    }
+                  };
+                  dynamo.update(params, function(err, data) {
+                    if (err) 
+                        return callback(err);
+                    cbUpdate(null, null)
+                 });
+            }, function(err) {
+                if( err ) {
+                    return callback(err)
+                } else {
+                    return callback(null, {success:true, LastEvaluatedKey: responseObj.LastEvaluatedKey})
+                }
+            });
         }
     ], (error, responseObj) => {
         if (error) {

@@ -7,26 +7,33 @@
             let date = event.toLocaleDateString(navigator.language, options);
             item.createdAt = date
         }
+
         $rootScope.processDates = function(items){
           angular.forEach(items, function (item, key) {
                 $rootScope.processDate(item)
             });
+        }
+
+        $scope.loadPosts = function () {
+            PostService.getAll($scope.lastPost).then((response) => {
+                if (response.error) {
+                    console.log(response.error)
+                }
+                else {
+                    $rootScope.processDates(response.items)
+                    if(!$scope.posts)
+                        $scope.posts = []
+                    $scope.posts = $scope.posts.concat(response.items);
+                    $scope.lastPost = response.LastEvaluatedKey
+                }
+            })
         }
         
         let id = $routeParams.id;
         if (!id) {//Creating or listing lastest post
             //Listing lastest post
             if ($location.url().indexOf('create') == -1) {
-                PostService.getAll().then((response) => {
-                    if (response.error) {
-                        console.log(response.error)
-                    }
-                    else {
-                        console.log('Response', response)
-                        $scope.posts = response
-                        $rootScope.processDates(response)
-                    }
-                })
+                $scope.loadPosts()
             }
         }
         else{

@@ -18,9 +18,10 @@
                 }).then(handleSuccess, handleError);
             };
 
-            service.getAll = function(){
+            service.getAll = function(lastPost){
                 return $http.post(config.STATIC_URL + 'posts', {
-                    access_token: $rootScope.user.token
+                    access_token: $rootScope.user.token,
+                    lastPost
                 }).then(handleSuccess, handleError);
             }
 

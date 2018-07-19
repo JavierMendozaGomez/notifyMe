@@ -15,7 +15,8 @@ let dynamo = new AWS.DynamoDB.DocumentClient()
 
 exports.handler = (event, context, result) => {
     console.log('Event', event)
-    let access_token = event.access_token
+    let access_token = event.access_token,
+        lastPost = event.lastPost
 
     if (!access_token) {
         return result('Bad Request: Some of mandatory fields are missing')
@@ -31,20 +32,24 @@ exports.handler = (event, context, result) => {
             })
         },
         (executor, callback) => {
-            dynamo.query({
+            let query = {
                 TableName: config.TABLE.POSTS,
                 IndexName: 'env-index',
                 KeyConditionExpression: 'env = :env',
                 ScanIndexForward: false,
                 ExpressionAttributeValues: {
                     ':env': 'PUBLIC'
-                }
-                }, (err, result) => {  
+                },
+                Limit: 5
+            }
+            if (lastPost)
+                query.ExclusiveStartKey = lastPost
+            dynamo.query(query, (err, result) => {  
                 if (err) {
                     console.log("Error",err);
                     return callback(err)
                 }
-                return callback(null, result.Items)
+                return callback(null, { items: result.Items, LastEvaluatedKey: result.LastEvaluatedKey })
             })
         } 
     ], (error, responseObj) => {

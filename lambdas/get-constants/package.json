@@ -1,0 +1,14 @@
+{
+  "name": "get-constants",
+  "version": "1.0.0",
+  "description": "Check if a user have credentials for see a webpage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Javier Mendoza",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": ""
+  }
+}

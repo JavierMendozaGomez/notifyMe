@@ -38,18 +38,6 @@ var app;
                 templateUrl: 'views/notification/notifications.view.html',
                 controller: 'NotificationCtrl'
             })
-           /* .when('/home', {
-                templateUrl: 'views/home.view.html',
-                controller: 'HomeCtrl'
-            })
-            .when('/users/view/:id', {
-                templateUrl: 'views/users/userView.view.html',
-                controller: 'UsersCtrl'
-            })
-            .when('/users/update/:id', {
-                templateUrl: 'views/users/userEdit.view.html',
-                controller: 'UsersCtrl'
-            })*/
             .otherwise({
                 redirectTo: '/init'
             });
@@ -60,7 +48,7 @@ var app;
         if ($rootScope.userData) {
             $rootScope.user = AuthenticationService.GetCredentials();
         }
-       /* $rootScope.$on('$locationChangeStart', function () {
+        $rootScope.$on('$locationChangeStart', function () {
             var loggedIn = $rootScope.user;
             if (loggedIn && AuthenticationService.GetCredentials()) {
                 $http.post(config.GET_CONSTANTS_URL, {
@@ -78,8 +66,9 @@ var app;
                     $window.location.reload();
                 });
             } else {
-                $location.url('/');
+                if($location.url().indexOf("/auth") == -1 && $location.url().indexOf("/register") == -1 )
+                    $location.url('/init');
             }
-        });*/
+        });
     });
 })();

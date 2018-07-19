@@ -5,6 +5,8 @@ module.exports = (grunt) => {
         "comment-create",
         "comments",
         "login",
+        "logout",
+        "get-constants",
         "notifications-by-post",
         "notifications-by-user",
         "post-create",

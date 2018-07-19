@@ -12,7 +12,7 @@ var app;
         $routeProvider
             .when('/init',{
                 templateUrl: 'views/home.view.html',
-                controller: 'InitCtrl'
+                controller: 'AuthenticationCtrl'
             })
             .when('/auth', {
                 templateUrl: 'views/auth.view.html',

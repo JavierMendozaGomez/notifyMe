@@ -37,6 +37,39 @@
     <script src="app/NotificationModule/NotificationService.js"></script>
     <script src="app/PostModule/PostService.js"></script>
     <script src="app/ReactionModule/ReactionService.js"></script>
-    <div ng-view="" class="ng-scope"></div>
+
+
+    <div ng-controller="AuthenticationCtrl">
+        <md-toolbar ng-if="user">
+            <div class="md-toolbar-tools">
+                <md-button ng-click="go('/posts')">
+                    NotifyMe
+                </md-button>
+                <h2 flex="" md-truncate="">Your notifier forum</h2>
+                <md-button ng-click="logout()" class="md-raised md-accent md-hue-3" aria-label="Learn More">
+                    Logout
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div layout="row">
+            <md-content ng-if="user">
+                <md-list>
+                    <md-subheader class="md-no-sticky">Menu</md-subheader>
+                    <md-list-item class="md-3-line" ng-click="go('/posts')">
+                        <div class="md-list-item-text" layout="column">
+                            <h2>Posts</h2>
+                        </div>
+                    </md-list-item>
+                    <md-list-item class="md-3-line" ng-click="go('/notifications')">
+                        <div class="md-list-item-text" layout="column">
+                            <h2>Notifications</h2>
+                        </div>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                </md-list>
+            </md-content>
+            <div flex="" ng-view="" class="ng-scope"></div>
+        </div>
+    </div>
 </body>
 <html>

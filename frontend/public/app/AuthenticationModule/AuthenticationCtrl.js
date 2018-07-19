@@ -1,6 +1,6 @@
 "use strict";
 (function () {
-    app.controller('AuthenticationCtrl', function ($scope, AuthenticationService, $rootScope, $mdToast, $location, $timeout) {
+    app.controller('AuthenticationCtrl', function ($scope, AuthenticationService, $rootScope, $mdToast, $location, $window, $timeout) {
 
         $scope.login = function (user) {
             AuthenticationService.Login(user)
@@ -46,5 +46,15 @@
                     }
                 })
         }
+        
+        $scope.logout = function(){
+            AuthenticationService.ClearCredentials()
+            $window.location.reload()
+        }
+
+        $scope.go = function (url) {
+            $location.url(url);
+        }
+
     })
 })()

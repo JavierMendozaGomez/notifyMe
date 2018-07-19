@@ -14,7 +14,8 @@ let dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = (event, context, result) => {
     console.log('Event', event)
-    let access_token = event.access_token
+    let access_token = event.access_token,
+        lastNotification = event.lastNotification
 
     if (!access_token) {
         return result('Bad Request: Some of mandatory fields are missing')
@@ -30,23 +31,26 @@ exports.handler = (event, context, result) => {
             })
         },
         (executor, callback) => {
-            dynamo.query({
+            let query = {
                 TableName: config.TABLE.NOTIFICATIONS,
                 IndexName: 'read-index',
                 KeyConditionExpression: '#read = :read',
-                ExpressionAttributeNames:{
-                    '#read':'read'
+                ExpressionAttributeNames: {
+                    '#read': 'read'
                 },
                 ExpressionAttributeValues: {
                     ':read': executor.id + '_unreaded'
                 },
                 Limit: 5
-            }, (err, result) => {  
+            }
+            if (lastNotification)
+                query.ExclusiveStartKey = lastNotification
+            dynamo.query(query, (err, result) => {
                 if (err) {
-                    console.log("Error",err);
+                    console.log("Error", err);
                     return callback(err)
                 }
-                return callback(null, {items: result.Items, LastEvaluatedKey: result.LastEvaluatedKey})
+                return callback(null, { items: result.Items, LastEvaluatedKey: result.LastEvaluatedKey })
             })
         },
         (responseObj, callback) => {
@@ -71,7 +75,7 @@ exports.handler = (event, context, result) => {
                 if( err ) {
                     return callback(err)
                 } else {
-                    return callback(null, {success:true, LastEvaluatedKey: responseObj.LastEvaluatedKey})
+                    return callback(null, responseObj)
                 }
             });
         }

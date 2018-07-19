@@ -4,9 +4,10 @@
         function ( $http, $rootScope) {
             var service = {};
 
-            service.getNotificationsByUser = function(){
+            service.getNotificationsByUser = function(lastNotification){
                 return $http.post(config.STATIC_URL + 'notifications-by-user', {
-                    access_token: $rootScope.user.token
+                    access_token: $rootScope.user.token,
+                    lastNotification
                 }).then(handleSuccess, handleError);
             }
 

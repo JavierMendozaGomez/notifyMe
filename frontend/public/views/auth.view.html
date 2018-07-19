@@ -1,27 +1,19 @@
-<div class="hold-transition login-page ng-scope" style="background-color: #2d2d2d" ng-if="!logging">
-        <div class="login-box">
-            <div class="login-box-body">
-                <form ng-submit="login(user)" role="form" name="form">
-                    <div class="form-group has-feedback">
-                        <input id="userEmail" type="text" class="form-control ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched" placeholder="Email" ng-model="user.email" aria-invalid="false" >
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"> </span>
-                    </div>
-                    <div class="form-group has-feedback">
-                        <input id="userPassword" type="password" class="form-control ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched" placeholder="Password" ng-model="user.password" aria-invalid="false">
-                        <span class="glyphicon glyphicon-lock form-control-feedback"> </span>
-                    </div>    
-                    <div class="form-group">
-                        <span class="message error ng-binding"></span>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <button type="submit" class="btn btn-block btn-flat">
-                                <span class="ng-binding ng-scope">Sign in</span>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+<div layout="column" layout-padding="" ng-cloak="">
+
+    <form ng-submit="login(user)" role="form" name="form">
+        <md-content class="md-no-momentum">
+            <md-input-container class="md-block">
+                <input ng-model="user.email" type="email" placeholder="Email" ng-required="true">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <input ng-model="user.password" type="password" placeholder="Password" ng-required="true">
+            </md-input-container>
+
+            <div layout="row" layout-align="center center">
+                <md-button type="submit" class="md-raised md-primary">Login</md-button>
             </div>
-    
-        </div>
-    </div>
+        </md-content>
+    </form>
+
+</div>

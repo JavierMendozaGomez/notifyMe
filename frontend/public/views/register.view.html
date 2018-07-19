@@ -1,0 +1,28 @@
+<div layout="column" layout-padding="" ng-cloak="">
+
+    <form ng-submit="register(user)" role="form" name="form">
+        <md-content class="md-no-momentum">
+            <md-input-container class="md-icon-float md-block">
+                <label>Name</label>
+                <input ng-model="user.name" type="text" ng-required="true">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <input ng-model="user.email" type="email" placeholder="Email" ng-required="true">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <input ng-model="user.password" type="password" placeholder="Password" ng-required="true">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <input ng-model="user.passwordConfirmation" type="password" placeholder="Password" ng-required="true">
+            </md-input-container>
+
+            <div layout="row" layout-align="center center">
+                <md-button type="submit" class="md-raised md-primary">Register</md-button>
+            </div>
+        </md-content>
+    </form>
+
+</div>

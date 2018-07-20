@@ -62,13 +62,21 @@ exports.handler = (event, context, result) => {
              });
         },
         (reactionItem, callback) =>{
+            dbGetter.getPost(reactionItem.idPost, (err, postItem) =>{
+                if(err)
+                    return callback(err)
+                return callback(null, reactionItem, postItem)
+            })
+        },
+        (reactionItem, postItem, callback) =>{
             let params = {
                 TableName: config.TABLE.NOTIFICATIONS,
                 Key: { id : reactionItem.idNotif },
                 ConditionExpression: 'id = :id',
-                UpdateExpression: 'set #type = :type',
-                ExpressionAttributeNames:{'#type':'type'},                
+                UpdateExpression: 'set #read = :read,  #type = :type',
+                ExpressionAttributeNames:{'#type':'type','#read':'read'},                
                 ExpressionAttributeValues: {
+                  ':read' : postItem.createdBy + '_unreaded',
                   ':type' :type,
                   ':id': reactionItem.idNotif
                 }

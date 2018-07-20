@@ -15,6 +15,7 @@ module.exports = (grunt) => {
         "posts",
         "reaction-create",
         "reaction-delete",
+        "reaction-read",
         "reaction-update",
         "user-create"
     ]

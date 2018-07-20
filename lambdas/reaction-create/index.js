@@ -14,6 +14,142 @@ let doc = require('aws-sdk'),
         region: config.CLIENT_CONSTANTS.AWS_REGION
     });
 
+/*Creates a reaction in a post */
+let reactionCreate = function(executor, postItem, type, callback){
+    let reactionItem = {
+        id: postItem.id + '_' + executor.id,
+        idPost: postItem.id,
+        type,
+        typeOfReaction: postItem.id + '_'+ type,
+        createdBy: executor.id,
+    }
+
+    let paramsReaction = {
+        TableName: config.TABLE.REACTIONS,
+        Item: reactionItem
+    }
+    console.log('Reaction item', paramsReaction)
+    
+    dynamo.put(paramsReaction, (err, queryResult) => {
+        if (err) {
+            console.log(err)
+            return callback('Bad Request: Unable to create reaction')
+        }
+        return callback(null, reactionItem)
+    })
+}
+
+/* Creates a notification to the user creator of the post*/
+let createNotifReaction = function (executor, postItem, reactionItem, type, callback) {
+    let notifItem = {
+        id: misc.md5(reactionItem.id + Date.now()),
+        type,
+        idPost:postItem.id,
+        idPostCreator: postItem.createdBy,
+        read: postItem.createdBy + '_unreaded',
+        post:{
+            id: postItem.id,
+            title: postItem.title
+        },
+        user:{
+            id:executor.id,
+            name: executor.name
+        },
+        createdAt: Math.ceil(Date.now() / 1000),
+    }
+
+    let paramsNotif = {
+        TableName: config.TABLE.NOTIFICATIONS,
+        Item: notifItem
+    }
+    console.log('Notification item', paramsNotif)
+
+    async.parallel([
+        (cb) => {
+            dynamo.put(paramsNotif, (err, queryResult) => {
+                if (err) {
+                    console.log(err)
+                    return cb('Bad Request: Unable to create notification')
+                }
+                console.log('Notification created')
+                return cb(null, reactionItem)
+            })
+        },
+        (cb) => {
+            updateUserNotification(postItem.createdBy, (err, response) => {
+                if (err)
+                    return cb(err)
+                return cb(null, response)
+            })
+        }],
+        (err, results) => {
+            if (err)
+                return callback(err)
+            return callback(null, notifItem)
+        });
+}
+
+/* The creator of the post is added to the list of users with unread notifications*/
+let updateUserNotification = function (idPostCreator, callback) {
+    async.waterfall([
+        (cb) => {
+            dbGetter.getUser(idPostCreator, (err, user) => {
+                if (err)
+                    return cb(err)
+                return cb(null, user)
+            })
+        },
+        (user, cb) => {
+            if (!user.read) {
+                let params = {
+                    TableName: config.TABLE.USERS,
+                    Key: { id: user.id },
+                    ConditionExpression: 'id = :id',
+                    UpdateExpression: 'set #read = :read',
+                    ExpressionAttributeNames: { '#read': 'read' },
+                    ExpressionAttributeValues: {
+                        ':read': 'true',
+                        ':id': user.id
+                    }
+                };
+                dynamo.update(params, function (err, data) {
+                    if (err)
+                        return cb(err);
+                    return cb(null, user)
+                });
+            }
+            else
+                return cb(null, user)
+
+        }
+    ], (error, responseObj) => {
+        if (error) {
+            return callback(error)
+        }
+        return callback(null, responseObj)
+    })
+
+}
+
+/* Updates the reaction for add a reference to the notification*/
+let updateReaction = function(reactionItem, notifItem, callback){
+    let params = {
+        TableName: config.TABLE.REACTIONS,
+        Key: { id : reactionItem.id },
+        ConditionExpression: 'id = :id',
+        UpdateExpression: 'set idNotif = :idNotif',
+        ExpressionAttributeValues: {
+          ':idNotif' : notifItem.id,
+          ':id': reactionItem.id
+        }
+      };
+      dynamo.update(params, function(err, data) {
+        if (err) 
+            return callback(err);
+        return callback(null, reactionItem)
+     });
+}
+
 let dynamo = new AWS.DynamoDB.DocumentClient()
 
 exports.handler = (event, context, result) => {
@@ -44,77 +180,25 @@ exports.handler = (event, context, result) => {
             })
         },
         (executor, postItem, callback) => {
-            let reactionItem = {
-                id: postItem.id + '_' + executor.id,
-                idPost: postItem.id,
-                type,
-                typeOfReaction: postItem.id + '_'+ type,
-                createdBy: executor.id,
-            }
-
-            let paramsReaction = {
-                TableName: config.TABLE.REACTIONS,
-                Item: reactionItem
-            }
-            console.log('Reaction item', paramsReaction)
-            
-            dynamo.put(paramsReaction, (err, queryResult) => {
-                if (err) {
-                    console.log(err)
-                    return callback('Bad Request: Unable to create reaction')
-                }
+            reactionCreate(executor, postItem, type, (err, reactionItem)=>{
+                if(err)
+                    return callback(err)
                 return callback(null, executor, postItem, reactionItem)
             })
         },
         (executor, postItem, reactionItem, callback) => {
-            let notifItem = {
-                id: misc.md5(reactionItem.id + Date.now()),
-                type,
-                idPost:postItem.id,
-                idPostCreator: postItem.createdBy,
-                read: postItem.createdBy + '_unreaded',
-                post:{
-                    id: postItem.id,
-                    title: postItem.title
-                },
-                user:{
-                    id:executor.id,
-                    name: executor.name
-                },
-                createdAt: Math.ceil(Date.now() / 1000),
-            }
-
-            let paramsNotif = {
-                TableName: config.TABLE.NOTIFICATIONS,
-                Item: notifItem
-            }
-            console.log('Notification item', paramsNotif)
-            
-            dynamo.put(paramsNotif, (err, queryResult) => {
-                if (err) {
-                    console.log(err)
-                    return callback('Bad Request: Unable to create notification')
-                }
-                reactionItem.idNotif = notifItem.id
+            createNotifReaction(executor, postItem, reactionItem, type, (err, notifItem) =>{
+                if(err)
+                    return callback(err)
                 return callback(null, notifItem, reactionItem)
             })
         },
         (notifItem, reactionItem, callback) =>{
-            let params = {
-                TableName: config.TABLE.REACTIONS,
-                Key: { id : reactionItem.id },
-                ConditionExpression: 'id = :id',
-                UpdateExpression: 'set idNotif = :idNotif',
-                ExpressionAttributeValues: {
-                  ':idNotif' : notifItem.id,
-                  ':id': reactionItem.id
-                }
-              };
-              dynamo.update(params, function(err, data) {
-                if (err) 
-                    return callback(err);
+            updateReaction(reactionItem, notifItem, (err, response)=>{
+                if(err)
+                    return callback(err)
                 return callback(null, reactionItem)
-             });
+            })
         }
     ], (error, responseObj) => {
         if (error) {

@@ -16,6 +16,15 @@
               <h3 ng-if="item.type == 'Like'">{{ item.user.name }} likes your post "
                 <a ng-href="/#/posts/view/{{item.post.id}}">{{ item.post.title}}"</a>
               </h3>
+              <h3 ng-if="item.type == 'Dislike'">{{ item.user.name }} dislikes your post "
+                <a ng-href="/#/posts/view/{{item.post.id}}">{{ item.post.title}}"</a>
+              </h3>
+              <h3 ng-if="item.type == 'Love'">{{ item.user.name }} loves your post "
+                <a ng-href="/#/posts/view/{{item.post.id}}">{{ item.post.title}}"</a>
+              </h3>
+              <h3 ng-if="item.type == 'Hate'">{{ item.user.name }} hates your post "
+                <a ng-href="/#/posts/view/{{item.post.id}}">{{ item.post.title}}"</a>
+              </h3>
               <h3 ng-if="item.type == 'Comment'">{{ item.user.name}} commented on
                 <a ng-href="/#/posts/view/{{item.post.id}}">your post</a>:"{{ item.comment.commentText}}"</h3>
             </div>

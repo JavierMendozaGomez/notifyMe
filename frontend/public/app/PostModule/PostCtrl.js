@@ -54,11 +54,13 @@
                     })
 
                     ReactionService.get(id).then((response)=>{
-                        if(response.error)
-                          console.log(response.error)
-                        else{
-                            console.log('Response', response)
-                            $scope.reaction = response
+                        if(response){
+                            if(response.error)
+                            console.log(response.error)
+                            else{
+                                console.log('Response', response)
+                                $scope.reaction = response
+                            }
                         }
                     })
                     
@@ -109,6 +111,41 @@
                     S3Service.downloadFile(response, post.id)
                 }
             })
+        }
+
+        $scope.updateReaction = function(type) {
+            //Creates reaction
+            if(!$scope.reaction){
+                $scope.reaction = {type}
+                ReactionService.create(id, type).then((response) => {
+                    if(response.error)
+                       console.log(response.error)
+                    else
+                        $scope.reaction = response
+                })
+            }
+            else if($scope.reaction.type != type){
+                //Change reaction
+                ReactionService.update(id, type).then((response) => {
+                    if(response.error)
+                       console.log(response.error)
+                    else
+                        $scope.reaction = response
+                })
+            }
+            else{
+                //Deletes reaction
+                ReactionService.delete(id).then((response) => {
+                    if(response.error)
+                       console.log(response.error)
+                    else
+                        delete $scope.reaction
+                })
+            }
+        }
+
+        $scope.checkReaction = function(type){
+            return ($scope.reaction && $scope.reaction.type == type)
         }
     })
 })()

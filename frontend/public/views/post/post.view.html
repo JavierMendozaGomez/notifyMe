@@ -12,7 +12,10 @@
     <md-content flex="" layout-padding="">
         <p>{{post.text}}</p>
         <div flex="">
-            <md-button class="md-raised md-button md-ink-ripple" ng-click="addComment(comment)">Like</md-button>
+            <md-button class="md-raised md-button md-ink-ripple" ng-click="updateReaction('Like')" ng-class="checkReaction('Like') && 'md-primary'">Like</md-button>
+            <md-button class="md-raised md-button md-ink-ripple" ng-click="updateReaction('Dislike')" ng-class="checkReaction('Dislike') && 'md-primary'">Dislike</md-button>
+            <md-button class="md-raised md-button md-ink-ripple" ng-click="updateReaction('Love')" ng-class="checkReaction('Love') && 'md-primary'">Love</md-button>
+            <md-button class="md-raised md-button md-ink-ripple" ng-click="updateReaction('Hate')" ng-class="checkReaction('Hate') && 'md-primary'">Hate</md-button>
             <md-list class="md-dense" flex="">
                 <md-subheader class="md-no-sticky">Comments</md-subheader>
                 <md-list-item class="md-3-line" ng-repeat="item in comments">

@@ -4,13 +4,14 @@
         function ( $http, $rootScope) {
             var service = {};
 
-            service.create = function(reaction){
+            service.create = function(idPost, type){
                 return $http.post(config.STATIC_URL + 'reaction-create', {
                     access_token: $rootScope.user.token,
-                    idPost: reaction.idPost,
-                    type: reaction.type
+                    idPost,
+                    type
                 }).then(handleSuccess, handleError);
             }
+            
             service.get = function(idPost){
                 return $http.post(config.STATIC_URL + 'reaction-read', {
                     access_token: $rootScope.user.token,
@@ -18,18 +19,18 @@
                 }).then(handleSuccess, handleError);
             }
 
-            service.update = function(reaction){
+            service.update = function(idPost, type){
                 return $http.post(config.STATIC_URL + 'reaction-update', {
                     access_token: $rootScope.user.token,
-                    idPost: reaction.idPost,
-                    type: reaction.type
+                    idPost,
+                    type
                 }).then(handleSuccess, handleError);
             }
 
-            service.delete = function(reaction){
+            service.delete = function(idPost){
                 return $http.post(config.STATIC_URL + 'reaction-delete', {
                     access_token: $rootScope.user.token,
-                    idPost: reaction.idPost
+                    idPost
                 }).then(handleSuccess, handleError);
             }
 

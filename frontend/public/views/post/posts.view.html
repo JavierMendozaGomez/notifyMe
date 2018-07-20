@@ -11,7 +11,7 @@
         </div>
       </md-toolbar>
   
-      <md-content>
+      <md-content flex="">
         <md-list flex="">
           <md-list-item class="md-3-line" ng-repeat="item in posts" ng-click="viewPost(item.id)">
             <div class="md-list-item-text" layout="column">
@@ -22,8 +22,8 @@
           </md-list-item>
           <md-divider></md-divider>
         </md-list>
-        <md-button class="md-raised md-button md-ink-ripple" ng-click="loadPosts()" ng-if="lastPost" layout="row" layout-align="center center">
-            Show More Posts</md-button>
+        <md-button class="buttonDark " ng-click="loadPosts()" ng-if="lastPost" layout="row" layout-align="center center">
+            <span style="color:white" >Show More Posts</span><md-button>
       </md-content>
     </div>
   

@@ -1,0 +1,16 @@
+{
+  "name": "email-notifier",
+  "version": "1.0.0",
+  "description": "Sends an email to all the users who have notifications without read",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Javier Mendoza",
+  "license": "ISC",
+  "dependencies": {
+    "async": "~2.0.0-rc.6",
+    "aws-sdk": "",
+    "nodemailer": "4.6.7"
+  }
+}

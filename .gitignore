@@ -10,3 +10,4 @@ lambdas/package-lock.json
 .DS_store
 lambdas/.DS_store
 lambdas/base/.DS_store
+\.lambda/

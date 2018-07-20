@@ -120,7 +120,7 @@ let updateUserNotification = function (idPostCreator, callback) {
                     }
                 };
                 dynamo.update(params, function (err, data) {
-                    console.log('ERROR ACTUALIZANDO PARAMS', err)
+                    console.log('Error updating user', err)
                     if (err)
                         return cb(err);
                     return cb(null, user)

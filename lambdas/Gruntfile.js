@@ -4,6 +4,7 @@ module.exports = (grunt) => {
     let lambdaFunctions = [
         "comment-create",
         "comments",
+        "email-notifier",
         "login",
         "logout",
         "get-constants",
